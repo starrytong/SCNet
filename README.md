@@ -2,7 +2,7 @@
 
 This repository is the official implementation of [SCNet: Sparse Compression Network for Music Source Separation](https://arxiv.org/abs/2401.13276) 
 
-![architecture](images/SCNet.pdf)
+![architecture](images/SCNet.png)
 
 ---
 # Training
