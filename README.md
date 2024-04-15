@@ -16,8 +16,8 @@ The training code will be available soon. Meanwhile, you can utilize the trainin
 ---
 # Todo
 
-- Experiment of mamba module.
-- Training and evaluation code
+- Experiments of mamba module.
+- Training and evaluation code.
 
 ---
 # Citing
