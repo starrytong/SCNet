@@ -11,7 +11,7 @@ The training code will be available soon. Meanwhile, you can utilize the trainin
 
 - [HTDemucs](https://github.com/facebookresearch/demucs/)
 - [Music-Source-Separation-Training](https://github.com/ZFTurbo/Music-Source-Separation-Training)
-- [SCNet-PyTorch](https://github.com/amanteur/SCNet-PyTorch/tree/main) - Special thanks for the excellent implementation.
+- [SCNet-PyTorch](https://github.com/amanteur/SCNet-PyTorch/tree/main) - Thanks for the great implementation.
 
 ---
 # Todo
