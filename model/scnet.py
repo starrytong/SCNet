@@ -121,7 +121,7 @@ class SDlayer(nn.Module):
             if stride == 1:
                 total_padding = kernel - stride
             else:
-                total_padding = (stride - current_length % stride) % stride
+                total_padding = stride - (current_length -kernel) % stride
             pad_left = total_padding // 2
             pad_right = total_padding - pad_left
 
@@ -352,15 +352,15 @@ class SCNet(nn.Module):
             save_lengths.append(lengths)
             save_original_lengths.append(original_lengths)
 
-        #separation
+        # separation
         x = self.separation_net(x)
 
-        #decoder
+        # decoder
         for fusion_layer, su_layer in self.decoder:
             x = fusion_layer(x, save_skip.pop())
             x = su_layer(x, save_lengths.pop(), save_original_lengths.pop())
 
-        #output
+        # output
         n = self.dims[0]
         x = x.view(B, n, -1, Fr, T)   
         x = x.reshape(-1, 2, Fr, T).permute(0, 2, 3, 1)
