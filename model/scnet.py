@@ -121,7 +121,7 @@ class SDlayer(nn.Module):
             if stride == 1:
                 total_padding = kernel - stride
             else:
-                total_padding = stride - (current_length -kernel) % stride
+                total_padding = (stride - current_length % stride) % stride
             pad_left = total_padding // 2
             pad_right = total_padding - pad_left
 
@@ -233,8 +233,9 @@ class SCNet(nn.Module):
     - win_size (int): Window size for STFT.
     - normalized (bool): Whether to normalize the STFT.
     - dims (List[int]): List of channel dimensions for each block.
-    - band_configs (Dict[str, Dict[str, int]]): Configuration for each frequency band, including how to divide the frequency bands, 
-      and the settings for the upsampling/downsampling convolutional layers.
+    - band_SR (List[float]): The proportion of each frequency band.
+    - band_stride (List[int]): The down-sampling ratio of each frequency band.
+    - band_kernel (List[int]): The kernel sizes for down-sampling convolution in each frequency band
     - conv_depths (List[int]): List specifying the number of convolution modules in each SD block.
     - compress (int): Compression factor for convolution module.
     - conv_kernel (int): Kernel size for convolution layer in convolution module.
@@ -253,11 +254,9 @@ class SCNet(nn.Module):
                  win_size = 4096,
                  normalized = True,
                  # SD/SU layer
-                 band_configs = {
-                    'low': { 'SR': .175, 'stride': 1, 'kernel': 3 },
-                    'mid': { 'SR': .392, 'stride': 4, 'kernel': 4 },
-                    'high': {'SR': .433, 'stride': 16, 'kernel': 16 }
-                 },                      
+                 band_SR = [0.175, 0.392, 0.433],     
+                 band_stride = [1, 4, 16],             
+                 band_kernel = [3, 4, 16],               
                  # Convolution Module
                  conv_depths = [3,2,1], 
                  compress = 4, 
@@ -276,7 +275,8 @@ class SCNet(nn.Module):
         self.sources = sources
         self.audio_channels = audio_channels
         self.dims = dims
-        self.band_configs = band_configs
+        band_keys = ['low', 'mid', 'high']
+        self.band_configs = {band_keys[i]: {'SR': band_SR[i], 'stride': band_stride[i], 'kernel': band_kernel[i]} for i in range(len(band_keys))}
         self.hop_length = hop_size
         self.conv_config = {
             'compress': compress,
@@ -352,15 +352,15 @@ class SCNet(nn.Module):
             save_lengths.append(lengths)
             save_original_lengths.append(original_lengths)
 
-        # separation
+        #separation
         x = self.separation_net(x)
 
-        # decoder
+        #decoder
         for fusion_layer, su_layer in self.decoder:
             x = fusion_layer(x, save_skip.pop())
             x = su_layer(x, save_lengths.pop(), save_original_lengths.pop())
 
-        # output
+        #output
         n = self.dims[0]
         x = x.view(B, n, -1, Fr, T)   
         x = x.reshape(-1, 2, Fr, T).permute(0, 2, 3, 1)
