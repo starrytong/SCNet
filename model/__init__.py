@@ -1,1 +1,0 @@
-from .scnet import SCNet
