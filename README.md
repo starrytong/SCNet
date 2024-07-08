@@ -13,7 +13,7 @@ cd SCNet
 pip install -r requirements.txt
 ```
 
-We use the accelerate package from Hugging Face for multi-gpu training. If you use fp16, you can set a larger batch size, and the final result will not differ much.
+We use the accelerate package from Hugging Face for multi-gpu training. 
 ```bash
 accelerate config
 ```
