@@ -6,18 +6,30 @@ This repository is the official implementation of [SCNet: Sparse Compression Net
 
 ---
 # Training
+First, you need to install the requirements.
 
-The training code will be available soon. Meanwhile, you can utilize the training frameworks in these repository:
+```bash
+cd SCNet
+pip install -r requirements.txt
+```
 
-- [HTDemucs](https://github.com/facebookresearch/demucs/)
-- [Music-Source-Separation-Training](https://github.com/ZFTurbo/Music-Source-Separation-Training)
-- [SCNet-PyTorch](https://github.com/amanteur/SCNet-PyTorch/tree/main) - Thanks for the great implementation.
+We use the accelerate package from Hugging Face for multi-gpu training. If you use fp16, you can set a larger batch size, and the final result will not differ much.
+```bash
+accelerate config
+```
 
+You need to modify the dataset path in the /conf/config.yaml. The dataset folder should contain the train and valid parts.
+```bash
+data:
+  wav: /path/to/dataset
 ---
-# Todo
 
-- Experiments of mamba module.
-- Training and evaluation code.
+The training command is as follows. If you do not specify a path, the default path will be used.
+```bash
+accelerate launch -m scnet.train --config_path path/to/config.yaml --save_path path/to/save/checkpoint/
+---
+
+
 
 ---
 # Citing
