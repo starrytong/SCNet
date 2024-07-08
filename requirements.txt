@@ -1,0 +1,10 @@
+accelerate==0.32.1
+julius==0.2.7
+ml_collections==0.1.1
+numpy
+PyYAML
+soundfile==0.12.1
+torch==2.0.1
+torchaudio==2.0.2
+tqdm
+einops==0.6.1
