@@ -22,12 +22,12 @@ You need to modify the dataset path in the /conf/config.yaml. The dataset folder
 ```bash
 data:
   wav: /path/to/dataset
----
+```
 
 The training command is as follows. If you do not specify a path, the default path will be used.
 ```bash
 accelerate launch -m scnet.train --config_path path/to/config.yaml --save_path path/to/save/checkpoint/
----
+```
 
 
 
