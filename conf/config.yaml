@@ -1,0 +1,79 @@
+
+data:
+  wav: /root/autodl-tmp/musdbhq
+  samplerate: 44100
+  segment: 11
+  shift: 1
+  channels: 2
+  normalize: true
+  metadata: ./metadata
+  sources: ['drums', 'bass', 'other', 'vocals']
+
+ema:
+  epoch: [0.9, 0.95]
+  batch: [0.9995, 0.9999]
+
+model:
+  sources: ['drums', 'bass', 'other', 'vocals']
+  audio_channels: 2
+  # Main structure
+  dims: [4, 32, 64, 128]
+  # STFT
+  nfft: 4096
+  hop_size: 1024
+  win_size: 4096
+  normalized: True
+  # SD/SU layer
+  band_SR: [0.175, 0.392, 0.433]     
+  band_stride: [1, 4, 16]             
+  band_kernel: [3, 4, 16]                  
+  # Convolution Module
+  conv_depths: [3,2,1]
+  compress: 4 
+  conv_kernel: 3
+  # Dual-path RNN
+  num_dplayer: 6
+  expand: 1
+
+epochs: 150
+batch_size: 4
+
+optim:
+  lr: 0.0005
+  decay_rate: 0.98
+  decay_step: 10
+  momentum: 0.9
+  beta2: 0.999
+  optim: adam
+  weight_decay: 0
+
+seed: 3407
+save_every:
+
+augment:
+  shift_same: false
+  remix:
+    proba: 1
+    group_size: 4
+  scale:
+    proba: 1
+    min: 0.25
+    max: 1.25
+  flip: true
+
+misc:
+  num_workers: 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
