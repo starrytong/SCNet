@@ -29,8 +29,15 @@ The training command is as follows. If you do not specify a path, the default pa
 accelerate launch -m scnet.train --config_path path/to/config.yaml --save_path path/to/save/checkpoint/
 ```
 
+---
+# Inference
+The model checkpoint was trained on the MUSDB dataset. You can download it from the following link:
 
+[Download Model Checkpoint](https://drive.google.com/file/d/1CdEIIqsoRfHn1SJ7rccPfyYioW3BlXcW/view?usp=sharing)
 
+```bash
+python -m scnet.inference --input_dir path/to/test/dir --output_path path/to/save/result/ --checkpoint_path path/to/checkpoint.th
+```
 ---
 # Citing
 
