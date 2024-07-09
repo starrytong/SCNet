@@ -49,10 +49,18 @@ def load_model(model, checkpoint_path):
 
         checkpoint = torch.load(checkpoint_path, map_location=torch.device('cpu'))
 
-        if 'state' not in checkpoint:
+        if 'best_state' not in checkpoint:
             raise KeyError(f"Checkpoint does not contain the state")
+            
+        state_dict = checkpoint['best_state']
+        new_state_dict = {}
+        for k, v in state_dict.items():
+            if k.startswith('module.'):
+               new_state_dict[k[7:]] = v
+            else:
+               new_state_dict[k] = v
 
-        model.load_state_dict(checkpoint['state'])
+        model.load_state_dict(new_state_dict)
         return model
 
 def copy_state(state):
