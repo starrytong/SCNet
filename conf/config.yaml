@@ -35,7 +35,7 @@ model:
   num_dplayer: 6
   expand: 1
 
-epochs: 150
+epochs: 200
 batch_size: 4
 
 optim:
@@ -47,7 +47,7 @@ optim:
   optim: adam
   weight_decay: 0
 
-seed: 3407
+seed: 42
 save_every:
 
 augment:
