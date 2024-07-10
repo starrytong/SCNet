@@ -61,7 +61,7 @@ class Seperator:
 
         estimates = estimates * std + mean
 
-        estimates = convert_audio(estimates, sample_rate, sample_rate, mix_channels)
+        estimates = convert_audio(estimates, 44100, sample_rate, mix_channels)
 
         separated_music_arrays = {}
         output_sample_rates = {}
