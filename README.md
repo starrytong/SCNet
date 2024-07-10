@@ -36,7 +36,7 @@ The model checkpoint was trained on the MUSDB dataset. You can download it from 
 [Download Model Checkpoint](https://drive.google.com/file/d/1CdEIIqsoRfHn1SJ7rccPfyYioW3BlXcW/view?usp=sharing)
 
 ```bash
-python -m scnet.inference --input_dir path/to/test/dir --output_path path/to/save/result/ --checkpoint_path path/to/checkpoint.th
+python -m scnet.inference --input_dir path/to/test/dir --output_dir path/to/save/result/ --checkpoint_path path/to/checkpoint.th
 ```
 ---
 # Citing
