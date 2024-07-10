@@ -9,7 +9,7 @@ This repository is the official implementation of [SCNet: Sparse Compression Net
 First, you need to install the requirements.
 
 ```bash
-cd SCNet
+cd SCNet-main
 pip install -r requirements.txt
 ```
 
