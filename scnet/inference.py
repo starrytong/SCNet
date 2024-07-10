@@ -25,7 +25,7 @@ class Seperator:
 
     @property
     def instruments(self):
-        return ['drums', 'bass', 'other', 'vocals']
+        return ['bass', 'drums', 'other', 'vocals']
 
     def raise_aicrowd_error(self, msg):
         raise NameError(msg)
@@ -56,13 +56,12 @@ class Seperator:
         with torch.no_grad():
             estimates = apply_model(self.separator, mix[None], overlap=0.5, progress=False)[0]
 
-        sr = self.separator.samplerate
         # Printing some sanity checks.
-        print(time.time() - b, mono.shape[-1] / sr, mix.std(), estimates.std())
+        print(time.time() - b, mono.shape[-1] / sample_rate, mix.std(), estimates.std())
 
         estimates = estimates * std + mean
 
-        estimates = convert_audio(estimates, self.separator.samplerate, sample_rate, mix_channels)
+        estimates = convert_audio(estimates, sample_rate, sample_rate, mix_channels)
 
         separated_music_arrays = {}
         output_sample_rates = {}
@@ -128,5 +127,6 @@ if __name__ == "__main__":
         os.mkdir(args.output_dir)
 
     model = SCNet(**config.model)
+    model.eval()
     seperator = Seperator(model, args.checkpoint_path)
     seperator.process_directory(args.input_dir, args.output_dir)
