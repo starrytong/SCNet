@@ -35,8 +35,8 @@ model:
   num_dplayer: 6
   expand: 1
 
-epochs: 200
-batch_size: 4
+epochs: 300
+batch_size: 8
 
 optim:
   lr: 0.0005
@@ -54,7 +54,7 @@ augment:
   shift_same: false
   remix:
     proba: 1
-    group_size: 4
+    group_size: 8
   scale:
     proba: 1
     min: 0.25
