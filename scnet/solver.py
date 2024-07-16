@@ -8,6 +8,7 @@ from .loss import spec_rmse_loss
 from tqdm import tqdm
 from .log import logger
 from accelerate import Accelerator
+from torch.cuda.amp import GradScaler, autocast
 
 def _summary(metrics):
     return " | ".join(f"{key.capitalize()}={val}" for key, val in metrics.items())
@@ -22,6 +23,7 @@ class Solver(object):
         self.optimizer = optimizer
         self.device = next(iter(self.model.parameters())).device
         self.accelerator = Accelerator()
+        self.scaler = GradScaler()
 
         self.stft_config = {
             'n_fft': config.model.nfft,
@@ -212,7 +214,8 @@ class Solver(object):
             if not train:
                 estimate = apply_model(self.model, mix, split=True, overlap=0)
             else:
-                estimate = self.model(mix)
+                with autocast():
+                   estimate = self.model(mix)
 
             assert estimate.shape == sources.shape, (estimate.shape, sources.shape)
 
@@ -231,7 +234,8 @@ class Solver(object):
 
             # optimize model in training mode
             if train:
-                self.accelerator.backward(loss)
+                scaled_loss = self.scaler.scale(loss)
+                self.accelerator.backward(scaled_loss)
                 grad_norm = 0
                 grads = []
                 for p in self.model.parameters():
@@ -240,7 +244,8 @@ class Solver(object):
                         grads.append(p.grad.data)
                 losses['grad'] = grad_norm ** 0.5
 
-                self.optimizer.step()
+                self.scaler.step(self.optimizer)
+                self.scaler.update()
                 self.optimizer.zero_grad()
                 for ema in self.emas['batch']:
                     ema.update()
