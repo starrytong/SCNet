@@ -223,6 +223,7 @@ class Solver(object):
             losses['loss'] = loss
             if not train:
                 nsdrs = new_sdr(sources, estimate.detach()).mean(0)
+                nsdrs = self.accelerator.reduce(nsdrs, reduction="mean")
                 total = 0
                 for source, nsdr in zip(self.config.model.sources, nsdrs):
                     losses[f'nsdr_{source}'] = nsdr
