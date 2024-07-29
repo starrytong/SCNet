@@ -13,7 +13,6 @@ from torch.cuda.amp import GradScaler, autocast
 def _summary(metrics):
     return " | ".join(f"{key.capitalize()}={val}" for key, val in metrics.items())
 
-
 class Solver(object):
     def __init__(self, loaders, model, optimizer, config, args):
         self.config = config
