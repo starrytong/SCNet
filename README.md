@@ -35,6 +35,18 @@ The model checkpoint was trained on the MUSDB dataset. You can download it from 
 
 [Download Model Checkpoint](https://drive.google.com/file/d/1CdEIIqsoRfHn1SJ7rccPfyYioW3BlXcW/view?usp=sharing)
 
+The large version is now available. 
+
+[SCNet-large](https://drive.google.com/file/d/1s7QvQwn8ag9oVstGDBQ6KZvacJkvyK7t/view?usp=drivesdk)
+
+You need to modify two parameters in the config.yaml file. 
+```bash
+dim = [4, 64, 128, 256]
+band_SR = [0.225, 0.372, 0.403]
+```
+I have performed normalization on the model's input during training, which helps in stabilizing the training process (no code modifications are needed during inference).
+
+
 ```bash
 python -m scnet.inference --input_dir path/to/test/dir --output_dir path/to/save/result/ --checkpoint_path path/to/checkpoint.th
 ```
