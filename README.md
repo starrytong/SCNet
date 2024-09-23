@@ -41,8 +41,8 @@ The large version is now available.
 
 You need to modify two parameters in the config.yaml file. 
 ```bash
-dim = [4, 64, 128, 256]
-band_SR = [0.225, 0.372, 0.403]
+dims: [4, 64, 128, 256]
+band_SR: [0.225, 0.372, 0.403]
 ```
 I have performed normalization on the model's input during training, which helps in stabilizing the training process (no code modifications are needed during inference).
 
