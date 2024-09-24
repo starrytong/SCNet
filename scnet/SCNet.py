@@ -333,7 +333,10 @@ class SCNet(nn.Module):
         x = x.permute(0, 3, 1, 2).reshape(x.shape[0]//self.audio_channels, x.shape[3]*self.audio_channels, x.shape[1], x.shape[2])
     
         B, C, Fr, T = x.shape
-    
+        mean = x.mean(dim=(1, 2, 3), keepdim=True)
+        std = x.std(dim=(1, 2, 3), keepdim=True)
+        x = (x - mean) / (1e-5 + std)
+        
         save_skip = deque()
         save_lengths = deque()
         save_original_lengths = deque()
@@ -354,7 +357,8 @@ class SCNet(nn.Module):
 
         #output
         n = self.dims[0]
-        x = x.view(B, n, -1, Fr, T)   
+        x = x.view(B, n, -1, Fr, T) 
+        x = x * std[:, None] + mean[:, None]
         x = x.reshape(-1, 2, Fr, T).permute(0, 2, 3, 1)
         x = torch.view_as_complex(x.contiguous())
         x = torch.istft(x, **self.stft_config)
