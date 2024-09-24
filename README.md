@@ -37,7 +37,8 @@ The model checkpoint was trained on the MUSDB dataset. You can download it from 
 
 The large version is now available. 
 
-[SCNet-large](https://drive.google.com/file/d/1s7QvQwn8ag9oVstGDBQ6KZvacJkvyK7t/view?usp=drivesdk)       [config.yaml](https://drive.google.com/file/d/1qxK7SZx6-Gsp1s3wCrj98X7--UcI4O3K/view?usp=drive_link)
+[SCNet-large](https://drive.google.com/file/d/1s7QvQwn8ag9oVstGDBQ6KZvacJkvyK7t/view?usp=drivesdk)       
+[config.yaml](https://drive.google.com/file/d/1qxK7SZx6-Gsp1s3wCrj98X7--UcI4O3K/view?usp=drive_link)
 
 I have performed normalization on the model's input during training, which helps in stabilizing the training process (no code modifications are needed during inference).
 
