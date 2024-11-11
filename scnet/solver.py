@@ -59,7 +59,7 @@ class Solver(object):
         self.epoch = -1
         self._reset()
 
-    def _serialize(self, epoch):
+    def _serialize(self, epoch, steps=0):
         package = {}
         package['state'] = self.model.state_dict()
         package['best_nsdr'] = self.best_nsdr
@@ -69,13 +69,11 @@ class Solver(object):
         for kind, emas in self.emas.items():
             for k, ema in enumerate(emas):
                 package[f'ema_{kind}_{k}'] = ema.state_dict()
-        self.accelerator.save(package, self.checkpoint_file)
-
-        save_every = self.config.save_every
-        if save_every and (epoch + 1) % save_every == 0 and epoch + 1 != self.config.epochs:
+        if steps: 
+            checkpoint_with_steps = Path(self.checkpoint_file).with_name(f'checkpoint_{epoch+1}_{steps}.th')
+            self.accelerator.save(package, checkpoint_with_steps)
+        else:
             self.accelerator.save(package, self.checkpoint_file)
-
-
 
     def _reset(self):
         """Reset state of the solver, potentially using checkpoint."""
@@ -90,9 +88,6 @@ class Solver(object):
             for kind, emas in self.emas.items():
                 for k, ema in enumerate(emas):
                     ema.load_state_dict(package[f'ema_{kind}_{k}'])
-
-
-
 
     def _format_train(self, metrics: dict) -> dict:
         """Formatting for train/valid metrics."""
@@ -249,8 +244,11 @@ class Solver(object):
                 self.optimizer.zero_grad()
                 for ema in self.emas['batch']:
                     ema.update()
-            losses = averager(losses)
+                if self.config.save_every and (idx+1) % self.config.save_every == 0:
+                    self._serialize(epoch, idx+1)
 
+            losses = averager(losses)
+            
             del loss, estimate
 
         if train:
