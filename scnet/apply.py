@@ -108,7 +108,7 @@ def apply_model(model, mix, shifts=1, split=True, segment=20, samplerate=44100,
         segment = int(samplerate * segment)
         stride = int((1 - overlap) * segment)
         offsets = range(0, length, stride)
-        scale = stride / samplerate
+        scale = stride // samplerate
         weight = th.cat([th.arange(1, segment // 2 + 1, device=device),
                          th.arange(segment - segment // 2, 0, -1, device=device)])              
         assert len(weight) == segment
@@ -122,7 +122,7 @@ def apply_model(model, mix, shifts=1, split=True, segment=20, samplerate=44100,
             futures.append((future, offset))
             offset += segment
         if progress:
-            futures = tqdm.tqdm(futures, unit_scale=scale, ncols=120, unit='seconds')
+            futures = tqdm.tqdm(futures, total=scale, ncols=120, unit='chunks')
         for future, offset in futures:
             chunk_out = future.result()
             chunk_length = chunk_out.shape[-1]
