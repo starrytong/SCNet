@@ -69,7 +69,7 @@ def apply_model(model, mix, shifts=1, split=True, segment=20, samplerate=44100,
 
     Args:
         shifts (int): if > 0, will shift in time `mix` by a random amount between 0 and 0.5 sec
-            and apply the oppositve shift to the output. This is repeated `shifts` time and
+            and apply the opposite shift to the output. This is repeated `shifts`-times and
             all predictions are averaged. This effectively makes the model time equivariant
             and improves SDR by up to 0.2 points.
         split (bool): if True, the input will be broken down in 8 seconds extracts
