@@ -1,5 +1,3 @@
-#From HT demucs https://github.com/facebookresearch/demucs/tree/release_v4?tab=readme-ov-file
-
 from collections import OrderedDict
 import hashlib
 import math
@@ -104,13 +102,13 @@ class Wavset:
             metadata (dict): output from `build_metadata`.
             sources (list[str]): list of source names.
             segment (None or float): segment length in seconds. If `None`, returns entire tracks.
-            shift (None or float): stride in seconds bewteen samples.
+            shift (None or float): stride in seconds between samples.
             normalize (bool): normalizes input audio, **based on the metadata content**,
                 i.e. the entire track is normalized, not individual extracts.
             samplerate (int): target sample rate. if the file sample rate
                 is different, it will be resampled on the fly.
             channels (int): target nb of channels. if different, will be
-                changed onthe fly.
+                changed on the fly.
             ext (str): extension for audio files (default is .wav).
 
         samplerate and channels are converted on the fly.
@@ -193,5 +191,26 @@ def get_wav_datasets(args):
                        normalize=args.normalize, **kw_cv)
     return train_set, valid_set
 
+# Some or all of the work in this file may be restricted by the following copyright.
+"""
+MIT License
 
+Copyright (c) Meta, Inc. and its affiliates.
 
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. """

@@ -11,8 +11,7 @@ import argparse
 import yaml
 
 
-
-class Seperator:
+class Separator:
     def __init__(self, model, checkpoint_path):
         self.separator = load_model(model, checkpoint_path)
 
@@ -139,5 +138,5 @@ if __name__ == "__main__":
 
     model = SCNet(**config.model)
     model.eval()
-    seperator = Seperator(model, args.checkpoint_path)
-    seperator.process_directory(args.input_dir, args.output_dir)
+    separator = Separator(model, args.checkpoint_path)
+    separator.process_directory(args.input_dir, args.output_dir)
