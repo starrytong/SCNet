@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from collections import deque
 from .separation import SeparationNet
-import typing as tp
+from typing import cast
 import math
 
 class Swish(nn.Module):
@@ -147,7 +147,7 @@ class SUlayer(nn.Module):
 
         # Initializing convolutional layers for each band
         self.convtrs = nn.ModuleList([
-            nn.ConvTranspose2d(channels_in, channels_out, [config['kernel'], 1], [config['stride'], 1])
+            nn.ConvTranspose2d(channels_in, channels_out, (config['kernel'], 1), (config['stride'], 1))
             for _, config in band_configs.items()
         ])
 
@@ -351,7 +351,8 @@ class SCNet(nn.Module):
         x = self.separation_net(x)
 
         #decoder
-        for fusion_layer, su_layer in self.decoder:
+        for dec in self.decoder:
+            fusion_layer, su_layer = cast(nn.Sequential, dec)
             x = fusion_layer(x, save_skip.pop())
             x = su_layer(x, save_lengths.pop(), save_original_lengths.pop())
 
